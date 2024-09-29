@@ -8,7 +8,7 @@ function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [errorMessage, setErrorMessage] = useState(''); // State to hold error messages
+  const [errorMessage, setErrorMessage] = useState(''); 
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -102,5 +102,4 @@ function Register() {
     </>
   );
 }
-
 export default Register;
