@@ -1,7 +1,16 @@
+/* Global reset for margins and paddings */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Style for your main App container */
 .App {
   text-align: center;
 }
 
+/* Ensures your logo spins */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -12,6 +21,8 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
+/* Styling for the header */
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -23,10 +34,12 @@
   color: white;
 }
 
+/* Link styling */
 .App-link {
   color: #61dafb;
 }
 
+/* Animation for the spinning logo */
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -34,4 +47,15 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Optional: Footer styling */
+.App-footer {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+  text-align: center;
+  width: 100%;
+  position: relative;
+  bottom: 0;
 }
