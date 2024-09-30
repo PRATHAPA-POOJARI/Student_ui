@@ -51,18 +51,7 @@ function Register() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
-              <TextField
-                margin="dense"
-                required
-                fullWidth
-                id="password"
-                label="Password"
-                name="password"
-                type="password"
-                size="small"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              
               <TextField
                 margin="dense"
                 required
@@ -74,6 +63,18 @@ function Register() {
                 size="small"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                required
+                fullWidth
+                id="password"
+                label="Password"
+                name="password"
+                type="password"
+                size="small"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               {errorMessage && ( // Display error message if exists
                 <Typography color="error" variant="body2" sx={{ mt: 1 }}>
