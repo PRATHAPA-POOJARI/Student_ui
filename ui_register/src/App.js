@@ -1,26 +1,27 @@
-// App.js
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import CollectionsPage from './pages/CollectionPage';
-import ListCollection from './pages/ListCollection'; 
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import LoginPage from './pages/LoginPage';
+import Home from './pages/Home';
+import Contact from './pages/Contact';
+import Menu from './pages/Menu';
+import Pagenotfound from './pages/Pagenotfound';
 import Login from './pages/Login';
-import Register from './pages/Register';
-import { AuthProvider } from './pages/AuthContext';
-import './App.css';  // Importing the updated CSS
+function App() {
+  const [cartItems, setCartItems] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false); // Add loggedIn state
 
-const App = () => {
   return (
     <Router>
-      <AuthProvider>
-        <Routes>
-          <Route path="/" element={<Register />} />
-          <Route path="/collections" element={<CollectionsPage />} />
-          <Route path="/collections/:databaseName" element={<ListCollection />} />
-          <Route path="/collections/:databaseName/:collectionName" element={<CollectionsPage />} />
-        </Routes>
-      </AuthProvider>
+      <Routes>
+        {/* <Route path="/" element={<LoginPage setLoggedIn={setLoggedIn} />} /> Pass setLoggedIn to LoginPage */}
+        <Route path="/home" element={<Home />} />
+        <Route path="/contact" element={<Contact cartItems={cartItems} />} />
+        <Route path="/menu" element={<Menu setCartItems={setCartItems} />} />
+        <Route path="/*" element={<Home />} />
+        < Route path =" login" element ={<Login/>} />
+      </Routes>
     </Router>
   );
-};
+}
 
 export default App;
