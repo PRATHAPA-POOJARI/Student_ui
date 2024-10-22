@@ -22,7 +22,7 @@ html, body {
   }
 }
 
-/* Styling for the header */
+/* Styling for the header - Ensure no extra space */
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -32,6 +32,8 @@ html, body {
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  margin: 0; /* Ensure no margin */
+  padding: 0; /* Ensure no padding */
 }
 
 /* Link styling */
