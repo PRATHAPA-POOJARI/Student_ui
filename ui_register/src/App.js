@@ -1,26 +1,35 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import LoginPage from './pages/LoginPage';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './pages/AuthContext';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Menu from './pages/Menu';
-import Pagenotfound from './pages/Pagenotfound';
 import Login from './pages/Login';
+import Pagenotfound from './pages/Pagenotfound';
+import Header from './components/Layout/Header';
+import Register  from'./pages/Register';
 function App() {
-  const [cartItems, setCartItems] = useState([]);
-  const [loggedIn, setLoggedIn] = useState(false); // Add loggedIn state
-
   return (
-    <Router>
-      <Routes>
-        {/* <Route path="/" element={<LoginPage setLoggedIn={setLoggedIn} />} /> Pass setLoggedIn to LoginPage */}
-        <Route path="/home" element={<Home />} />
-        <Route path="/contact" element={<Contact cartItems={cartItems} />} />
-        <Route path="/menu" element={<Menu setCartItems={setCartItems} />} />
-        <Route path="/*" element={<Home />} />
-        < Route path =" login" element ={<Login/>} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        {/* Include the Header in the app so it's visible on all pages */}
+        <Header />
+
+        <Routes>
+          {/* Default route should be Home */}
+          <Route path="/" element={<Navigate to="/home" />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/menu" element={<Menu />} />
+          {/* Login route */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* For any undefined route, show PageNotFound */}
+          <Route path="*" element={<Pagenotfound />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
