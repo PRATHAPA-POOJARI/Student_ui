@@ -1,27 +1,33 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, Card, CardContent, Typography, TextField, Button, Link } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import Header from './Header';
+import { Container, Card, CardContent, Typography, TextField, Button } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import Header from '../components/Layout/Header';
 
 function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [errorMessage, setErrorMessage] = useState(''); 
+  const [phone, setPhone] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setErrorMessage(''); // Clear any previous error messages
+    setErrorMessage('');
+
+    // Basic Client-Side Validation
+    if (!username || !password || !email || !phone) {
+      setErrorMessage('All fields are required.');
+      return;
+    }
 
     try {
-      await axios.post('http://localhost:5000/api/register', { username, password, email });
+      await axios.post('http://localhost:9000/api/register', { username, password, email, phone });
       alert('Registration successful!');
       navigate('/login');
     } catch (error) {
       console.error('Error registering:', error);
-      // Display specific error message from server if available
       if (error.response && error.response.data && error.response.data.message) {
         setErrorMessage(error.response.data.message);
       } else {
@@ -32,8 +38,8 @@ function Register() {
 
   return (
     <>
-      <Header/>
-      <Container component="main" maxWidth="xs" sx={{ mt: 2, px: 1 }}>
+      <Header />
+      <Container component="main" maxWidth="xs" sx={{ mt: 15, px: 1 }}>
         <Card elevation={3}>
           <CardContent sx={{ p: 2 }}>
             <Typography variant="h6" component="h1" align="center" sx={{ mb: 1 }}>
@@ -51,7 +57,6 @@ function Register() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
-              
               <TextField
                 margin="dense"
                 required
@@ -68,6 +73,17 @@ function Register() {
                 margin="dense"
                 required
                 fullWidth
+                id="phone"
+                label="Phone"
+                name="phone"
+                size="small"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                required
+                fullWidth
                 id="password"
                 label="Password"
                 name="password"
@@ -76,7 +92,7 @@ function Register() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              {errorMessage && ( // Display error message if exists
+              {errorMessage && (
                 <Typography color="error" variant="body2" sx={{ mt: 1 }}>
                   {errorMessage}
                 </Typography>
@@ -92,7 +108,7 @@ function Register() {
               </Button>
               <Typography variant="body2" align="center" sx={{ mt: 1.5 }}>
                 Already have an account?{' '}
-                <Link href="/login" underline="hover">
+                <Link to="/login" style={{ textDecoration: 'none', color: 'primary' }}>
                   Login
                 </Link>
               </Typography>
@@ -103,4 +119,5 @@ function Register() {
     </>
   );
 }
+
 export default Register;
