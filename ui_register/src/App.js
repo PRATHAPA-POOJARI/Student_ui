@@ -7,25 +7,26 @@ import Menu from './pages/Menu';
 import Login from './pages/Login';
 import Pagenotfound from './pages/Pagenotfound';
 import Header from './components/Layout/Header';
-import Register  from'./pages/Register';
+import Register from './pages/Register';
+import ProtectedRoute from './pages/ProtectedRoute';
+
 function App() {
   return (
     <AuthProvider>
       <Router>
-        {/* Include the Header in the app so it's visible on all pages */}
         <Header />
-
         <Routes>
-          {/* Default route should be Home */}
-          <Route path="/" element={<Navigate to="/home" />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/menu" element={<Menu />} />
-          {/* Login route */}
+          <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/* For any undefined route, show PageNotFound */}
+          {/* Protect routes with ProtectedRoute */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/menu" element={<Menu />} />
+          </Route>
+
           <Route path="*" element={<Pagenotfound />} />
         </Routes>
       </Router>
