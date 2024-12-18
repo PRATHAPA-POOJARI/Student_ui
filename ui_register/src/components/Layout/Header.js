@@ -1,40 +1,41 @@
 import React, { useState } from "react";
 import { AppBar, Box, IconButton, Toolbar, Typography, Button, Drawer, Divider } from "@mui/material";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-// import Logo from "../../images/Logo.jpg";
 import Logo1 from "../../images/Logo1.jpg";
 import "../../styles/HeaderStyles.css";
+
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const navigate = useNavigate();  // useNavigate hook to navigate programmatically
+  const navigate = useNavigate(); // useNavigate hook for navigation
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleLoginClick = () => {
-    navigate("/register");  // Navigate to Login page when clicked
+  const handleNavigate = (path) => {
+    navigate(path); // Reusable function for navigation
+    setMobileOpen(false); // Close drawer after navigation
   };
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" color={"goldenrod"} sx={{ my: 2 }}>
+      <Typography variant="h6" color={"goldenrod"} sx={{ my: 2, cursor: "pointer" }} onClick={() => handleNavigate("/home")}>
         <img src={Logo1} alt="logo" height={"40"} width="100" />
       </Typography>
       <Divider />
       <ul className="mobile-navigation">
-        <li>
-          <NavLink to="/home">Home</NavLink>
+        <li onClick={() => handleNavigate("/home")} style={{ cursor: "pointer" }}>
+          Home
+        </li>
+        <li onClick={() => handleNavigate("/menu")} style={{ cursor: "pointer" }}>
+          About
+        </li>
+        <li onClick={() => handleNavigate("/contact")} style={{ cursor: "pointer" }}>
+          ಕನ್ನಡ ಕಲಿ
         </li>
         <li>
-          <NavLink to="/menu">About</NavLink>
-        </li>
-        <li>
-          <NavLink to="/contact">ಕನ್ನಡ ಕಲಿ</NavLink>
-        </li>
-        <li>
-          <Button onClick={handleLoginClick}>Login</Button>  {/* Button to trigger login page */}
+          <Button onClick={() => handleNavigate("/register")}>Login</Button>
         </li>
       </ul>
     </Box>
@@ -50,7 +51,7 @@ const Header = () => {
             edge="start"
             sx={{ mr: 2, display: { sm: "none" } }}
             onClick={handleDrawerToggle}
-            style={{ color: 'black' }}
+            style={{ color: "black" }}
           >
             <MenuIcon />
           </IconButton>
@@ -58,23 +59,24 @@ const Header = () => {
             color={"goldenrod"}
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1 }}
-           >
-          {/* //   <img src={Logo} alt="logo" height={"50"} width="100" /> */}
+            sx={{ flexGrow: 1, cursor: "pointer" }}
+            onClick={() => handleNavigate("/home")}
+          >
+            <img src={Logo1} alt="logo" height={"50"} width="100" />
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             <ul className="navigation-menu">
-              <li>
-                <NavLink to="/home" style={{ color: 'black' }}>Home</NavLink>
+              <li onClick={() => handleNavigate("/home")} style={{ cursor: "pointer", color: "black" }}>
+                Home
+              </li>
+              <li onClick={() => handleNavigate("/menu")} style={{ cursor: "pointer", color: "black" }}>
+                About
+              </li>
+              <li onClick={() => handleNavigate("/contact")} style={{ cursor: "pointer", color: "black" }}>
+                ಕನ್ನಡ ಕಲಿ
               </li>
               <li>
-                <NavLink to="/menu" style={{ color: 'black' }}>About</NavLink>
-              </li>
-              <li>
-                <NavLink to="/contact" style={{ color: 'black' }}>ಕನ್ನಡ ಕಲಿ</NavLink>
-              </li>
-              <li>
-                <Button onClick={handleLoginClick}>Login</Button>  {/* Button to navigate to login */}
+                <Button onClick={() => handleNavigate("/register")}>Login</Button>
               </li>
             </ul>
           </Box>
