@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Dialog, DialogTitle, DialogActions, Button } from '@mui/material';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -8,6 +8,32 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 const Footer = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [socialMedia, setSocialMedia] = useState('');
+    const [daysLeft, setDaysLeft] = useState(0);
+    const [timeLeft, setTimeLeft] = useState('');
+
+    useEffect(() => {
+        const updateCountdown = () => {
+            const year = new Date().getFullYear();
+            const targetDate = new Date(`${year}-12-31T23:59:59`);
+            const currentDate = new Date();
+
+            const differenceInTime = targetDate.getTime() - currentDate.getTime();
+            const differenceInDays = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
+
+            setDaysLeft(differenceInDays >= 0 ? differenceInDays : 0);
+
+            const hoursLeft = Math.floor((differenceInTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutesLeft = Math.floor((differenceInTime % (1000 * 60 * 60)) / (1000 * 60));
+            const secondsLeft = Math.floor((differenceInTime % (1000 * 60)) / 1000);
+
+            setTimeLeft(`${hoursLeft}h ${minutesLeft}m ${secondsLeft}s`);
+        };
+
+        updateCountdown();
+        const interval = setInterval(updateCountdown, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     const handleDialogOpen = (media) => {
         setOpenDialog(true);
@@ -46,23 +72,43 @@ const Footer = () => {
                 textAlign: "center",
                 bgcolor: 'black',
                 color: 'white',
-                p: 0.5, // Decreased padding for a smaller height
+                p: 0.5,
                 '@media (max-width:800px)': {
-                    p: 0.25, // Reduced padding for smaller screens
+                    p: 0.25,
                 }
             }}>
+                {/* Timer Display at Bottom Left Corner */}
                 <Box sx={{
-                    my: 1, // Reduced vertical margin
+                    position: 'absolute',
+                    bottom: '10px',
+                    left: '10px'
+                }}>
+                    <Typography variant="body2" sx={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        color: '#fff',
+                        padding: '5px 10px',
+                        borderRadius: '5px',
+                        fontSize: '0.9rem'
+                    }}>
+                        {daysLeft > 0
+                            ? `Time until the end of the year: ${daysLeft} day${daysLeft > 1 ? 's' : ''}, ${timeLeft}`
+                            : 'Happy New Year!'}
+                    </Typography>
+                </Box>
+
+                {/* Social Media Icons */}
+                <Box sx={{
+                    my: 1,
                     display: 'flex',
                     justifyContent: 'center',
                     "& svg": {
-                        fontSize: "40px", // Reduced icon size
+                        fontSize: "30px",
                         cursor: "pointer",
-                        mx: 1.5, // Margin between icons
+                        mx: 1.5,
                     },
                     "& svg:hover": {
                         color: "goldenrod",
-                        transform: 'translateY(-5px)', // Keeps the hover effect
+                        transform: 'translateY(-5px)',
                         transition: 'all 400ms',
                     },
                 }}>
@@ -71,15 +117,17 @@ const Footer = () => {
                     <GitHubIcon onClick={() => handleDialogOpen('github')} />
                     <YouTubeIcon onClick={() => handleDialogOpen('youtube')} />
                 </Box>
+
                 <Typography variant="body2" sx={{
                     "@media (max-width:800px)": {
-                        fontSize: '0.8rem' // Adjusted font size for smaller screens
+                        fontSize: '0.8rem'
                     }
                 }}>
                     All Rights Reserved © 2024
                 </Typography>
             </Box>
 
+            {/* Dialog for Social Media */}
             <Dialog open={openDialog} onClose={handleDialogClose}>
                 <DialogTitle>
                     Do you want to visit {socialMedia === 'instagram' ? 'Instagram' : socialMedia === 'twitter' ? 'Twitter' : socialMedia === 'youtube' ? 'YouTube' : 'Prathap\'s GitHub account'}?
@@ -90,7 +138,7 @@ const Footer = () => {
                 </DialogActions>
             </Dialog>
         </footer>
-    )
-}
+    );
+};
 
 export default Footer;
