@@ -1,43 +1,61 @@
 import React, { useState } from "react";
-import { AppBar, Box, IconButton, Toolbar, Typography, Button, Drawer, Divider } from "@mui/material";
+import { AppBar, Box, IconButton, Toolbar, Typography, Button, Drawer, Divider, Popover } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import Logo1 from "../../images/Logo1.jpg";
+import Logo1 from "../../images/Logo1.png";
 import "../../styles/HeaderStyles.css";
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const navigate = useNavigate(); // useNavigate hook for navigation
+  const [anchorEl, setAnchorEl] = useState(null); // State for Popover
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleNavigate = (path) => {
-    navigate(path); // Reusable function for navigation
-    setMobileOpen(false); // Close drawer after navigation
+  const handleClickLogin = (event) => {
+    setAnchorEl(event.currentTarget); // Open popover on button click
   };
+
+  const handleClosePopover = () => {
+    setAnchorEl(null); // Close popover
+  };
+
+  const handleSelectOption = (role) => {
+    // Navigate to the respective login page based on role
+    navigate(`/login/${role}`);
+    handleClosePopover(); // Close the popover after selection
+  };
+
+  const open = Boolean(anchorEl); // Check if popover is open
+  const id = open ? "simple-popover" : undefined;
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" color={"goldenrod"} sx={{ my: 2, cursor: "pointer" }} onClick={() => handleNavigate("/home")}>
+      <Typography
+        variant="h6"
+        color={"goldenrod"}
+        sx={{ my: 2, cursor: "pointer" }}
+        onClick={() => navigate("/home")}
+      >
         <img src={Logo1} alt="logo" height={"40"} width="100" />
       </Typography>
       <Divider />
-      <ul className="mobile-navigation">
-        <li onClick={() => handleNavigate("/home")} style={{ cursor: "pointer" }}>
+      <div className="mobile-navigation">
+        <Button onClick={() => navigate("/home")} sx={{ my: 2, width: "100%" }}>
           Home
-        </li>
-        <li onClick={() => handleNavigate("/menu")} style={{ cursor: "pointer" }}>
+        </Button>
+        <Button onClick={() => navigate("/menu")} sx={{ my: 2, width: "100%" }}>
           About
-        </li>
-        <li onClick={() => handleNavigate("/contact")} style={{ cursor: "pointer" }}>
+        </Button>
+        <Button onClick={() => navigate("/contact")} sx={{ my: 2, width: "100%" }}>
           ಕನ್ನಡ ಕಲಿ
-        </li>
-        <li>
-          <Button onClick={() => handleNavigate("/register")}>Login</Button>
-        </li>
-      </ul>
+        </Button>
+        <Button onClick={handleClickLogin} sx={{ my: 2, width: "100%" }}>
+          Login
+        </Button>
+      </div>
     </Box>
   );
 
@@ -60,28 +78,73 @@ const Header = () => {
             variant="h6"
             component="div"
             sx={{ flexGrow: 1, cursor: "pointer" }}
-            onClick={() => handleNavigate("/home")}
+            onClick={() => navigate("/home")}
           >
             <img src={Logo1} alt="logo" height={"50"} width="100" />
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            <ul className="navigation-menu">
-              <li onClick={() => handleNavigate("/home")} style={{ cursor: "pointer", color: "black" }}>
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <Button
+                onClick={() => navigate("/home")}
+                sx={{ cursor: "pointer", color: "black", textTransform: "none" }}
+              >
                 Home
-              </li>
-              <li onClick={() => handleNavigate("/menu")} style={{ cursor: "pointer", color: "black" }}>
+              </Button>
+              <Button
+                onClick={() => navigate("/menu")}
+                sx={{ cursor: "pointer", color: "black", textTransform: "none" }}
+              >
                 About
-              </li>
-              <li onClick={() => handleNavigate("/contact")} style={{ cursor: "pointer", color: "black" }}>
+              </Button>
+              <Button
+                onClick={() => navigate("/contact")}
+                sx={{ cursor: "pointer", color: "black", textTransform: "none" }}
+              >
                 ಕನ್ನಡ ಕಲಿ
-              </li>
-              <li>
-                <Button onClick={() => handleNavigate("/register")}>Login</Button>
-              </li>
-            </ul>
+              </Button>
+              <Button
+                onClick={handleClickLogin}
+                sx={{
+                  cursor: "pointer",
+                  color: "black",
+                  textTransform: "none",
+                  fontWeight: "bold",
+                }}
+              >
+                Login
+              </Button>
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>
+
+      {/* Popover for Login Options */}
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClosePopover}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Box sx={{ p: 2, display: "flex", flexDirection: "column", gap: 2 }}>
+          <Button onClick={() => handleSelectOption("admin")} sx={{ width: "100%" }}>
+            Admin
+          </Button>
+          <Button onClick={() => handleSelectOption("student")} sx={{ width: "100%" }}>
+            Student
+          </Button>
+          <Button onClick={() => handleSelectOption("lecturer")} sx={{ width: "100%" }}>
+            Lecturer
+          </Button>
+        </Box>
+      </Popover>
 
       <Box component="nav">
         <Drawer
