@@ -23,9 +23,12 @@ const Header = () => {
   };
 
   const handleSelectOption = (role) => {
-    // Navigate to the respective login page based on role
-    navigate(`/login/${role}`);
-    handleClosePopover(); // Close the popover after selection
+    if(role== 'admin'){
+      navigate("/admin")
+    }
+    else {
+      navigate(`/login/${role}`)
+    }
   };
 
   const open = Boolean(anchorEl); // Check if popover is open
