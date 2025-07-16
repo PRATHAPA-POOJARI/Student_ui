@@ -9,6 +9,7 @@ import Pagenotfound from './pages/Pagenotfound';
 import Header from './components/Layout/Header';
 import Register from './pages/Register';
 import ProtectedRoute from './pages/ProtectedRoute';
+import AdminPage from './pages/AdminPage';
 
 function App() {
   return (
@@ -19,8 +20,9 @@ function App() {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/admin" element={<AdminPage />} />
 
-          {/* Protect routes with ProtectedRoute */}
+          {/* Protect routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
             <Route path="/contact" element={<Contact />} />
